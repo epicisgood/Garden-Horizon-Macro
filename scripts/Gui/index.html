@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Epic's GAG Macro UI</title>
+  <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+  <div class="container">
+    <div class="macrotitle">
+          <img src="../../images/GameIcon.ico"
+          style="width: 32.5px; height: 32.5px; margin-bottom: 3px; vertical-align: middle;">
+          Epic's Garden Horizon Macro
+    </div>
+
+    <div class="window-controls" id="ahkTitleBar">
+        <button class="minimizeButton" onclick="ahk.global.WinMinimize('A')">_</button>
+        <button class="closeButton" onclick="ahk.global.WinClose('A')">x</button>
+    </div>
+    <div class="tabs">
+      <button onclick="switchTab('main tab')">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-house-icon lucide-house">
+          <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/>
+          <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        </svg>
+        Main
+      </button>
+
+      <button onclick="switchTab('Seeds tab')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-apple-icon lucide-apple"><path d="M12 20.94c1.5 0 2.75 1.06 4 1.06 3 0 6-8 6-12.22A4.91 4.91 0 0 0 17 5c-2.22 0-4 1.44-5 2-1-.56-2.78-2-5-2a4.9 4.9 0 0 0-5 4.78C2 14 5 22 8 22c1.25 0 2.5-1.06 4-1.06Z"/><path d="M10 2c1 .5 2 2 2 5"/></svg>
+        Seeds
+      </button>
+
+      <button onclick="switchTab('Gears tab')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings2-icon lucide-settings-2"><path d="M14 17H5"/><path d="M19 7h-9"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>
+        Gears
+      </button>
+
+      <button onclick="switchTab('Event tab')">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-trophy-icon lucide-trophy">
+          <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+          <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+          <path d="M4 22h16"/>
+          <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+          <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+          <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
+        </svg>
+        Event
+      </button>
+    </div>
+
+    <div id="main tab" class="tab active">
+      <label>Webhook URL:</label>
+      <input type="text" id="url" placeholder="https://discord.com/api/webhooks/WebhookHere">
+
+      <label>Discord ID:</label>
+      <input type="text" id="discordID" placeholder="1234567890">
+
+      <label>Private Link:</label>
+      <input type="text" id="VipLink" placeholder="https://www.roblox.com/games/130594398886540/Grow-a-Garden?privateServerLinkCode=28062830835932767537940880155560">
+
+      <div class="donate-section">
+        <div class="credits">
+          <span>Macro By: _epic. </span>
+          <div></div>
+          <span id="random-message"></span>
+          <div></div>
+          <div></div>
+          <div></div>
+            <div>
+              <img class="discord-btn" onclick="ahk.global.run('https://discord.gg/Vc465gUXHk')" alt="Discord!" src="../../images/Other/discordButton.png">
+              <img class="donate-btn" onclick="ahk.global.run('https://www.roblox.com/games/18130765440/Grow-a-Garden-Donation-Area#!/store')" src="../../images/Other/donateButton.png" alt="Donate Here!">
+            </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="Seeds tab" class="tab">  
+      <div class="rewards-grid" id="SeedsGrid">
+        <div class="reward-box" style="font-weight: 500;">
+          <div class="reward-options">
+            <label><input type="checkbox" id="Seeds">Enable Seeds</label>
+          </div>
+          <div style="height: 17px;"></div>
+          <div class="reward-options">
+            <label><input type="checkbox" class="SelectAll">Select All</label>
+          </div>
+        </div>
+      </div>
+      
+
+
+    </div>
+
+    <div id="Gears tab" class="tab">  
+      <div class="rewards-grid" id="GearsGrid">
+
+      <div class="reward-box" style="font-weight: 500;">
+        <div class="reward-options">
+          <label><input type="checkbox" id="Gears">Enable Gears</label>
+        </div>
+        <div style="height: 17px;"></div>
+        <div class="reward-options">
+          <label><input type="checkbox" class="SelectAll">Select All</label>
+        </div>
+      </div>
+
+      </div>
+    </div>
+
+
+    <div id="Event tab" class="tab">  
+      <div class="rewards-grid">
+
+        <!-- <div class="reward-box">
+          <div class="reward-header">
+            <img src="../../images/Events/theGoat.webp" style="width: 32.5px; height: 32.5px; margin-right: 3px; vertical-align: middle;">
+            <span>Traveling Merchant</span>
+          </div>
+          <div class="reward-options">
+            <label><input type="checkbox" id="TravelingMerchant">Claim</label>
+          </div>
+          
+        </div> -->
+
+        <h1>Nothing yet!</h1>
+
+        
+      </div>
+    
+  </div>
+  
+  
+
+    <hr>
+    <div class="footer">
+      <button onclick="ahk.ButtonClick.Func('Start')">Start (F1)</button>
+      <button onclick="ahk.ButtonClick.Func('Stop')">Stop (F2)</button>
+      <button onclick="onSaveClick(this)" class="saveButton">Save All</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
