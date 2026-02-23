@@ -1,4 +1,4 @@
-# 🍏 Epic's Garden Horizon Macro
+# 🌴 Epic's Garden Horizon Macro
 
 A macro for **Garden Horizon** that automatically buys your selected seeds, and gears!
 
