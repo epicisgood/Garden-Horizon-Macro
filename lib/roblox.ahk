@@ -121,7 +121,11 @@ ResizeRoblox() {
 		WinMaximize(winTitle)
 		Sleep(333)
 	}
-	resHeight := 1080
+    ActivateRoblox()
+    hwnd := GetRobloxHWND()
+    GetRobloxClientPos(hwnd)
+	resHeight := 1009
+	; resHeight := 1080
 	resWidth := 1920
 	if (windowHeight > resHeight || windowWidth > resWidth)
 	{

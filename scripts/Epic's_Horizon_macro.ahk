@@ -151,8 +151,9 @@ CheckDisconnnect(){
                 GetRobloxClientPos(GetRobloxHWND())
                 relativeMouseMove(0.5,0.5)
                 Click
-                Sleep(500)
-                relativeMouseMove(0.5,0.85)
+                Send("w")
+                Sleep(4000)
+                relativeMouseMove(0.5,0.86)
                 Sleep(500)
                 Click
                 Click
@@ -160,7 +161,6 @@ CheckDisconnnect(){
                 PlayerStatus("Game Succesfully loaded", "0x00a838", ,false)
                 Sleep(1000)
                 Send("{Tab}")
-                Send("1")
                 Sleep(300)
                 CloseChat()
                 Sleep(1500)
@@ -604,11 +604,6 @@ SpamClick(amount){
 
 
 
-F3::{
-    ; seedItems := getItems("Seeds")
-    ; buyShop(seedItems, "Seeds")
-    ; CheckStock(3, ["Sunflower", "Dandelion", "Poppy", "Tulip"])
-}
 
 CheckStock(index, list){
     ActivateRoblox()
@@ -633,12 +628,20 @@ CheckStock(index, list){
     pBMScreen := Gdip_BitmapFromScreen(captureX "|" captureY "|" captureWidth "|" captureHeight)
     If (Gdip_ImageSearch(pBMScreen, bitmaps["NoStock"], &OutputList, , , , , 25) = 1) {
         Gdip_DisposeImage(pBMScreen)
-        PlayerStatus(list[index] " is out of stock, skipping.", "0xFF0000",,false,,false)
-        ; PlayerStatus(list[index] " is out of stock, skipping.", "0xFF0000",,,,pBMScreen)
         return 0
     }
+    IsStock := false
 
-    If (Gdip_ImageSearch(pBMScreen, bitmaps["GreenStock"], &OutputList, , , , , 25) = 1) {
+    If (Gdip_ImageSearch(pBMScreen, bitmaps["ClickedGreenStock"], &OutputList , , , , , 25) = 1) {
+        IsStock := true
+    } else If (Gdip_ImageSearch(pBMScreen, bitmaps["GreenStock"], &OutputList , , , , , 25) = 1) {
+        IsStock := true
+    } else if (Gdip_ImageSearch(pBMScreen, bitmaps["HoveredGreenStock"], &OutputList, , , , , 25) = 1) {
+        IsStock := true
+    }
+
+
+    if (IsStock) {
         Cords := StrSplit(OutputList, ",")
         x := Cords[1] + captureX 
         y := Cords[2] + captureY + 3
@@ -647,27 +650,38 @@ CheckStock(index, list){
         Click
         Gdip_DisposeImage(pBMScreen)
     } else {
-        Gdip_DisposeImage(pBMScreen)
+        ; Gdip_DisposeImage(pBMScreen)
+        PlayerStatus("Stock Not Found for " list[index] ".", "0xe67422",,false,,pBMScreen)
         return 0
     }
 
     loop {
+        IsStock := false 
         pBMScreen := Gdip_BitmapFromScreen(captureX "|" captureY "|" captureWidth "|" captureHeight)
-        If (Gdip_ImageSearch(pBMScreen, bitmaps["GreenStock"], &OutputList , , , , , 25) = 1) {
+        If (Gdip_ImageSearch(pBMScreen, bitmaps["ClickedGreenStock"], &OutputList , , , , , 25) = 1) {
+            IsStock := true
+        } else If (Gdip_ImageSearch(pBMScreen, bitmaps["GreenStock"], &OutputList , , , , , 25) = 1) {
+            IsStock := true
+        } else if (Gdip_ImageSearch(pBMScreen, bitmaps["HoveredGreenStock"], &OutputList, , , , , 25) = 1) {
+            IsStock := true
+        }
+
+        If (IsStock) {
             Cords := StrSplit(OutputList, ",")
             x := Cords[1] + captureX 
             y := Cords[2] + captureY + 3
             MouseMove(x, y)
             Click
-            Gdip_DisposeImage(pBMScreen)
             Sleep(25)
-        } else {
             Gdip_DisposeImage(pBMScreen)
-            PlayerStatus("Bought " list[index] "s!", "0x22e6a8",,false)
+        } else {
+            PlayerStatus("Bought " list[index] "s!", "0x22e6a8",,false,,true)
+            Gdip_DisposeImage(pBMScreen)
             return 1
         }
 
-        if (A_index == 20) {
+        if (A_index == 25) {
+            PlayerStatus("Bought 25 " list[index] "s!", "0x22e6a8",,false,,true)
             Gdip_DisposeImage(pBMScreen)
             return 0
         }
@@ -675,8 +689,6 @@ CheckStock(index, list){
 
 }
 
-F4::{
-}
 
 buyShop(itemList, itemType){
     pos := 0.75
@@ -703,11 +715,21 @@ buyShop(itemList, itemType){
             Sleep(250)
             Click
             Sleep(250)
-            ScrollDown(1)
+            if A_ScreenHeight == 600 {
+                ScrollDown(0.8)
+            } else {
+                ScrollDown(1)
+            }
             Sleep(500)
         } else {
             Sleep(250)
-            ScrollDown(2.1)
+            if A_ScreenHeight == 1080 {
+                ScrollDown(2.1)
+            } else if A_ScreenHeight == 768 {
+                ScrollDown(2.15)
+            } else if A_ScreenHeight == 600 {
+                ScrollDown(1.67)
+            }
             Sleep(250)   
             Click
             Sleep(500)
@@ -740,11 +762,13 @@ ScrollDown(amount := 1) {
 }
 
 
-
+F4::{
+    CloseShop("Gears")
+}
 DetectShop(shop){
     loop 15 {
         Sleep(500)
-        if (CloseShop(shop, false) == 1){
+        if (CloseShop(shop, false,1) == 1){
             Sleep(2500)
             PlayerStatus("Detected " shop " shop opened", "0x22e6a8",,false,,false)
             return 1
@@ -754,53 +778,57 @@ DetectShop(shop){
     return 0
 }
 
-
-CloseShop(shop, Clickit := true, amount := 15){
+CloseShop(shop, Clickit := true, amount := 15) {
     capX := windowX + windowWidth * 0.60
     capY := windowY + windowHeight * 0.1
     capW := windowWidth * 0.38
     capH := windowHeight * 0.25
     direction := 7
-    local name := ""
+    local names := []
+
     if shop == "Seeds" {
-        varation := 30
-        name := "SeedsCloseButton"
+        varation := 15
+        names := ["SeedsCloseButton", "SeedsHoverCloseButton"]
     } else if shop == "Gears" {
         varation := 20
-        name := "GearsCloseButton"
+        names := ["GearsCloseButton"]
     }
 
-    pBMScreen := Gdip_BitmapFromScreen(capX "|" capY "|" capW "|" capH)
+    
     loop amount {
-        if (Gdip_ImageSearch(pBMScreen, bitmaps[name], &OutputList, , , , , varation,,direction) = 1) {
-            if (clickit == true){
-                Cords := StrSplit(OutputList, ",")
-                if (shop == "Gears") {
-                    x := Cords[1] + capX - 35
-                    y := Cords[2] + capY - 2
-                } else if (shop == "Seeds") {
-                    x := Cords[1] + capX - 2
-                    y := Cords[2] + capY - 50
-                }
-                MouseMove(x, y)
-                Sleep(100)
-                Click
-            }
-            Sleep(1000)
-            if amount > 5 {
-                PlayerStatus("Closed shop!", "0x22e6a8",,false,,false)
-            }
-            Gdip_DisposeImage(pBMScreen)
-            return true
-        }
-        Sleep(500)
-    }
-    Gdip_DisposeImage(pBMScreen)
-    if amount > 5 {
-        PlayerStatus("Failed to close shop.", "0xFF0000",,false,,true)
-    }
-    return false
+        pBMScreen := Gdip_BitmapFromScreen(capX "|" capY "|" capW "|" capH)
+        ; Gdip_SaveBitmapToFile(pBMScreen,'ss.png')
+        for index, name in names {
+            if (Gdip_ImageSearch(pBMScreen, bitmaps[name], &OutputList, , , , , varation,, direction) = 1) {
 
+                if (Clickit) {
+                    Cords := StrSplit(OutputList, ",")
+                    x := Cords[1] + capX - 2
+                    y := Cords[2] + capY - 2
+                    MouseMove(x, y)
+                    Sleep(100)
+                    Click
+                }
+
+                Sleep(1000)
+
+                if amount > 5
+                    PlayerStatus("Closed shop!", "0x22e6a8",, false,, false)
+
+                Gdip_DisposeImage(pBMScreen)
+                return true
+            }
+        }
+
+        Sleep(500)
+        Gdip_DisposeImage(pBMScreen)
+    }
+
+
+    if amount > 5
+        PlayerStatus("Failed to close shop.", "0xFF0000",, false,, true)
+
+    return false
 }
 
 
@@ -836,18 +864,17 @@ getItems(item){
     return names
 }
 
-initShops(){
-    static Shopinit := true
-    if (Shopinit == true){
-        if ((Mod(A_Min, 10) = 3 || Mod(A_Min, 10) = 8)) {
-            global LastShopTime := nowUnix()
-            BuySeeds()
-            BuyGears()
-            Shopinit := false
-        }
+initShops() {
+    static shopInit := true
+    
+    minuteMod := Mod(A_Min, 10)
+    ; hourMod := Mod(A_Hour, 24)
+
+    if (shopInit && (minuteMod = 3 || minuteMod = 8)) {
+        global LastShopTime
+        LastShopTime := nowUnix()
+        shopInit := false
     }
-
-
 }
 
 BuySeeds(){
@@ -960,26 +987,23 @@ MainLoop() {
     MyWindow.Destroy()
     CloseChat() 
     Closelb()
-    ; equipRecall()
     CameraCorrection()
     BuySeeds()
     BuyGears()
     loop {
+
         initShops()
+        minuteMod := Mod(A_Min, 10)
         
-        if (((Mod(A_Min, 10) = 2 || Mod(A_Min, 10) = 7)) && A_Sec == 30) {
+        if ((minuteMod = 2 || minuteMod = 7) && A_Sec == 30) {
             CameraCorrection()
-        }
-        if ((Mod(A_Min, 10) = 3 || Mod(A_Min, 10) = 8)) {
             RewardInterupt()
         }
-        if (Mod(A_Index, 30) == 0){
+        if (minuteMod == 0){
             CloseClutter()
             Closelb()
             if (Disconnect()){
-                Sleep(1500)
-                ; equipRecall()
-                ; Sleep(500)
+                Sleep(500)
                 CameraCorrection()
             }
         }
@@ -1019,16 +1043,16 @@ ShowToolTip(){
 }
 
 
-; F3::
-; {
-;     ; ActivateRoblox()
-;     ; ResizeRoblox()
-;     ; hwnd := GetRobloxHWND()
-;     ; GetRobloxClientPos(hwnd)
-;     ; pBMScreen := Gdip_BitmapFromScreen(windowX "|" windowY + 30 "|" windowWidth "|" windowHeight - 30)
-;     ; Gdip_SaveBitmapToFile(pBMScreen,"ss.png")
-;     ; Gdip_DisposeImage(pBMScreen)
-;     PauseMacro()
-; }
+F3::
+{
+    ; ActivateRoblox()
+    ; ResizeRoblox()
+    ; hwnd := GetRobloxHWND()
+    ; GetRobloxClientPos(hwnd)
+    ; pBMScreen := Gdip_BitmapFromScreen(windowX "|" windowY + 30 "|" windowWidth "|" windowHeight - 30)
+    ; Gdip_SaveBitmapToFile(pBMScreen,"ss.png")
+    ; Gdip_DisposeImage(pBMScreen)
+    PauseMacro()
+}
 
 

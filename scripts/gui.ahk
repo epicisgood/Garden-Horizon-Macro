@@ -270,7 +270,7 @@ handleUpdate(ver){
 
     if choice = "Yes"
     {
-        url := "https://github.com/epicisgood/Garden-Horizon-Macro/releases/download/v" ver "/Epics_GAG_macro_v" ver ".zip"
+        url := "https://github.com/epicisgood/Garden-Horizon-Macro/releases/download/v" ver "/Epics_Horizon_macro_v" ver ".zip"
         CopySettings := 1
         olddir := A_WorkingDir
         DeleteOld := 1

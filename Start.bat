@@ -23,11 +23,11 @@ for /f "delims=#" %%E in ('"prompt #$E# & for %%E in (1) do rem"') do set "\e=%%
 set red=%\e%[91m
 set reset=%\e%[0m
 
-if exist "scripts\Epic's_GAG_macro.ahk" (
+if exist "scripts\Epic's_Horizon_macro.ahk" (
 
 	if defined ahkExe (
 
-		start "" "%~dp0!ahkExe!" "%~dp0scripts\Epic's_GAG_macro.ahk" %*
+		start "" "%~dp0!ahkExe!" "%~dp0scripts\Epic's_Horizon_macro.ahk" %*
 		exit
 		
 	) else (
@@ -43,7 +43,7 @@ if exist "scripts\Epic's_GAG_macro.ahk" (
 
 ) else (
 
-	echo %red%Could not find 'Epic's_GAG_macro.ahk' script!%reset%
+	echo %red%Could not find 'Epic's_Horizon_macro.ahk' script!%reset%
 	echo %red%Please ensure it is located in the 'scripts' folder.%reset%
 	echo %red%It might be because you did not extract this file.%reset%
 	echo:
