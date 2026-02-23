@@ -787,7 +787,9 @@ CloseShop(shop, Clickit := true, amount := 15){
                 Click
             }
             Sleep(1000)
-            PlayerStatus("Closed shop!", "0x22e6a8",,false,,false)
+            if amount > 5 {
+                PlayerStatus("Closed shop!", "0x22e6a8",,false,,false)
+            }
             Gdip_DisposeImage(pBMScreen)
             return true
         }
