@@ -995,7 +995,7 @@ MainLoop() {
         initShops()
         minuteMod := Mod(A_Min, 10)
         
-        if ((minuteMod = 2 || minuteMod = 7) && A_Sec == 30) {
+        if ((minuteMod = 3 || minuteMod = 8)) {
             CameraCorrection()
             RewardInterupt()
         }
