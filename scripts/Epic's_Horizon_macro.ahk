@@ -996,7 +996,9 @@ MainLoop() {
         minuteMod := Mod(A_Min, 10)
         
         if ((minuteMod = 3 || minuteMod = 8)) {
-            CameraCorrection()
+            if A_Sec < 5 {
+                CameraCorrection()
+            }
             RewardInterupt()
         }
         if (minuteMod == 0){
