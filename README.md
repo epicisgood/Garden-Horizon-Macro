@@ -8,7 +8,8 @@ A macro for **Garden Horizon** that automatically buys your selected seeds, and 
 
 <img width="450" height="500" alt="image" src="https://github.com/user-attachments/assets/c38e2e1f-b79f-4536-a96a-d475e54fc90e" />
 
-
+---
+**⚠️This macro only works for Windows Operating Systems!!**
 
 ---
 
