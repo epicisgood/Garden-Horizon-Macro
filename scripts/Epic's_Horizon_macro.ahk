@@ -459,7 +459,7 @@ Clickbutton(button, clickit := 1){
         capY := windowY + 30
         capW := windowWidth // 2
         capH := 100
-        varation := 10
+        varation := 20
         direction := 7
     } else if (button == "Robux"){
         capX := windowX + windowWidth // 4
@@ -471,6 +471,7 @@ Clickbutton(button, clickit := 1){
     }
 
     pBMScreen := Gdip_BitmapFromScreen(capX "|" capY "|" capW "|" capH)
+
     if (Gdip_ImageSearch(pBMScreen, bitmaps[button], &OutputList, , , , , varation,,direction) = 1) {
         if (clickit == 1){
             Cords := StrSplit(OutputList, ",")
@@ -597,7 +598,6 @@ SpamClick(amount){
         Sleep 20
     }
 }
-
 
 
 

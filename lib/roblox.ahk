@@ -112,26 +112,50 @@ ResizeRoblox() {
     hwnd := GetRobloxHWND()
     GetRobloxClientPos(hwnd)
 	winTitle := "ahk_exe RobloxPlayerBeta.exe"
-	WinMaximize(winTitle)
 	Sleep(333)
 	if (windowHeight == A_ScreenHeight && windowWidth == A_ScreenWidth)
 	{
 		Send("{F11}")
 		Sleep(333)
 		WinMaximize(winTitle)
-		Sleep(333)
 	}
+
     ActivateRoblox()
     hwnd := GetRobloxHWND()
     GetRobloxClientPos(hwnd)
 	resHeight := 1009
-	; resHeight := 1080
 	resWidth := 1920
-	if (windowHeight > resHeight || windowWidth > resWidth)
+
+	if (windowHeight > resHeight)
 	{
-		WinMove(0, 0, resWidth, resHeight, winTitle)
+		style := WinGetStyle(winTitle)
+		if (style & 0x1000000)
+			WinRestore(winTitle)
+		Sleep(333)
+
+		; Windows 10 Speicfic this why we doing this 
+		Loop 5 {
+				WinGetPos(&wX, &wY, &wW, &wH, winTitle)
+				WinGetClientPos(&cX, &cY, &cW, &cH, winTitle)
+
+				; Calculate gaps 
+				diffX := cX - 0
+				diffY := cY - 0
+				diffW := resWidth - cW
+				diffH := resHeight - cH
+
+
+				if (diffX == 0 && diffY == 0 && cW == resWidth && cH == resHeight)
+					break ; Perfect Resolution!
+
+				; Move it by its current position MINUS the error we found
+				WinMove(wX - diffX, wY - diffY, wW + diffW, wH + diffH, winTitle)
+
+				Sleep(100) 
+		}
 	}
 	Sleep(250)
     hwnd := GetRobloxHWND()
     GetRobloxClientPos(hwnd)
 }
+
