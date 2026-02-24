@@ -702,6 +702,7 @@ buyShop(itemList, itemType){
             }
         }
 
+
         if A_Index == 1 {
             relativeMouseMove(0.4,0.4)
             Click
@@ -723,7 +724,7 @@ buyShop(itemList, itemType){
             Sleep(500)
         } else {
             Sleep(250)
-            if A_ScreenHeight == 1080 {
+            if A_ScreenHeight >= 1000 {
                 ScrollDown(2.1)
             } else if A_ScreenHeight == 768 {
                 ScrollDown(2.15)
