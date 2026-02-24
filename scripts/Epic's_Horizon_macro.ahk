@@ -762,9 +762,7 @@ ScrollDown(amount := 1) {
 }
 
 
-F4::{
-    CloseShop("Gears")
-}
+
 DetectShop(shop){
     loop 15 {
         Sleep(500)
@@ -787,7 +785,7 @@ CloseShop(shop, Clickit := true, amount := 15) {
     local names := []
 
     if shop == "Seeds" {
-        varation := 15
+        varation := 25
         names := ["SeedsCloseButton", "SeedsHoverCloseButton"]
     } else if shop == "Gears" {
         varation := 20
