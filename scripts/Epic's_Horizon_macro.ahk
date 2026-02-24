@@ -660,7 +660,7 @@ CheckStock(index, list){
         pBMScreen := Gdip_BitmapFromScreen(captureX "|" captureY "|" captureWidth "|" captureHeight)
 
         If (Gdip_ImageSearch(pBMScreen, bitmaps["NoStock"], , , , , , 25) = 1) {
-            PlayerStatus("Bought " A_Index " " list[index] "s!", "0x22e6a8",,false,,true)
+            PlayerStatus("Bought " list[index] "s!", "0x22e6a8",,false,,true)
             Gdip_DisposeImage(pBMScreen)
             return 0
         }
@@ -688,7 +688,7 @@ CheckStock(index, list){
         }
 
         if (A_index == 25) {
-            PlayerStatus("Bought 25 " list[index] "s!", "0x22e6a8",,false,,true)
+            PlayerStatus("Bought (Limit Reached) " list[index] "s!", "0x22e6a8",,false,,true)
             Gdip_DisposeImage(pBMScreen)
             return 0
         }
