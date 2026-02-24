@@ -659,18 +659,18 @@ CheckStock(index, list){
         IsStock := false 
         pBMScreen := Gdip_BitmapFromScreen(captureX "|" captureY "|" captureWidth "|" captureHeight)
 
+        If (Gdip_ImageSearch(pBMScreen, bitmaps["NoStock"], , , , , , 25) = 1) {
+            PlayerStatus("Bought " A_Index " " list[index] "s!", "0x22e6a8",,false,,true)
+            Gdip_DisposeImage(pBMScreen)
+            return 0
+        }
+
         If (Gdip_ImageSearch(pBMScreen, bitmaps["ClickedGreenStock"], &OutputList , , , , , 25) = 1) {
             IsStock := true
         } else If (Gdip_ImageSearch(pBMScreen, bitmaps["GreenStock"], &OutputList , , , , , 25) = 1) {
             IsStock := true
         } else if (Gdip_ImageSearch(pBMScreen, bitmaps["HoveredGreenStock"], &OutputList, , , , , 25) = 1) {
             IsStock := true
-        }
-        
-        If (Gdip_ImageSearch(pBMScreen, bitmaps["NoStock"], , , , , , 25) = 1) {
-            PlayerStatus("Bought " A_Index " " list[index] "s!", "0x22e6a8",,false,,true)
-            Gdip_DisposeImage(pBMScreen)
-            return 0
         }
 
         If (IsStock) {
