@@ -552,12 +552,8 @@ ZoomAlign(){
 
 
 CameraCorrection(){
-    if (Disconnect()){
-        Sleep(1500)
-        ; equipRecall()
-        Sleep(500)
-    }
-    
+    Disconnect()
+
     CloseClutter()
 
     Clickbutton("Garden")
@@ -679,7 +675,7 @@ CheckStock(index, list){
             y := Cords[2] + captureY + 3
             MouseMove(x, y)
             Click
-            Sleep(25)
+            Sleep(50)
             Gdip_DisposeImage(pBMScreen)
         } else {
             PlayerStatus("Bought " list[index] "s!", "0x22e6a8",,false,,true)
@@ -687,8 +683,8 @@ CheckStock(index, list){
             return 1
         }
 
-        if (A_index == 25) {
-            PlayerStatus("Bought (Limit Reached) " list[index] "s!", "0x22e6a8",,false,,true)
+        if (A_index == 50) {
+            PlayerStatus("Bought " list[index] "s! (Limit Reached)", "0x22e6a8",,false,,true)
             Gdip_DisposeImage(pBMScreen)
             return 0
         }
@@ -906,6 +902,7 @@ BuySeeds(){
     }
     PlayerStatus("Failed to buy seeds 2 times, CLOSING ROBLOX!", "0x001a12")
     CloseRoblox()
+    Disconnect()
 }
 
 
@@ -918,15 +915,18 @@ BuyGears(){
     if !(CheckSetting("Gears", "Gears")){
         return
     }
-    loop 3 {
+    loop 2 {
         PlayerStatus("Going to buy Gears!", "0x22e6a8",,false,,false)
         ActivateRoblox()
         Clickbutton("Seeds",1)
-        Sleep(500)
+        Sleep(1500)
 
         Walk(1900, WKey,Akey)
+        Sleep(750)
         Walk(1200 ,Akey)
+        Sleep(750)
         Walk(500, Wkey)
+        Sleep(500)
         Send("{" Ekey "}")
         if !DetectShop("Gears"){
             CameraCorrection()
@@ -939,8 +939,11 @@ BuyGears(){
     
     CloseClutter()
     Sleep(1500)
-    ; equipRecall()
-    PlayerStatus("failed to open gear shop 3 times.", "0x001a12")
+    
+    PlayerStatus("Failed to buy gears 2 times, CLOSING ROBLOX!", "0x001a12")
+    CloseRoblox()
+    Disconnect()
+
 }
 
 
@@ -1012,13 +1015,10 @@ MainLoop() {
             RewardInterupt()
         }
 
-        if (minuteMod == 0 && A_Sec < 3) {
+        if (minuteMod == 1 && A_Sec < 3) {
             CloseClutter()
             Closelb()
-            if (Disconnect()){
-                Sleep(500)
-                CameraCorrection()
-            }
+            Disconnect()
         }
         ShowToolTip()
         Sleep(1000)
