@@ -471,7 +471,6 @@ Clickbutton(button, clickit := 1){
     }
 
     pBMScreen := Gdip_BitmapFromScreen(capX "|" capY "|" capW "|" capH)
-
     if (Gdip_ImageSearch(pBMScreen, bitmaps[button], &OutputList, , , , , varation,,direction) = 1) {
         if (clickit == 1){
             Cords := StrSplit(OutputList, ",")
@@ -558,9 +557,10 @@ CameraCorrection(){
         ; equipRecall()
         Sleep(500)
     }
+    
+    CloseClutter()
 
     Clickbutton("Garden")
-    CloseClutter()
     Sleep(300)
     ChangeCamera("Follow")
 
@@ -777,11 +777,11 @@ DetectShop(shop){
         if (CloseShop(shop, false,1) == 1){
             Sleep(2500)
             PlayerStatus("Detected " shop " shop opened", "0x22e6a8",,false,,false)
-            return 1
+            return true
         }
     }
     PlayerStatus("Failed to open " shop " shop", "0x22e6a8",,false,,true)
-    return 0
+    return false
 }
 
 CloseShop(shop, Clickit := true, amount := 15) {
@@ -796,14 +796,13 @@ CloseShop(shop, Clickit := true, amount := 15) {
         varation := 25
         names := ["SeedsCloseButton", "SeedsHoverCloseButton"]
     } else if shop == "Gears" {
-        varation := 20
+        varation := 25
         names := ["GearsCloseButton"]
     }
 
     
     loop amount {
         pBMScreen := Gdip_BitmapFromScreen(capX "|" capY "|" capW "|" capH)
-        ; Gdip_SaveBitmapToFile(pBMScreen,'ss.png')
         for index, name in names {
             if (Gdip_ImageSearch(pBMScreen, bitmaps[name], &OutputList, , , , , varation,, direction) = 1) {
 
@@ -839,10 +838,10 @@ CloseShop(shop, Clickit := true, amount := 15) {
 
 
 CloseClutter(){
-    CloseShop("Seeds",false,1)
-    CloseShop("Gears",false,1)
+    CloseShop("Seeds",true,1)
+    CloseShop("Gears",true,1)
     Sleep(200)
-    Clickbutton("Robux")
+    Clickbutton("Robux",true)
     Sleep(100)
 }
 
@@ -880,6 +879,8 @@ initShops() {
         global LastShopTime
         LastShopTime := nowUnix()
         shopInit := false
+        BuySeeds()
+        BuyGears()
     }
 }
 
@@ -888,7 +889,7 @@ BuySeeds(){
     if !(CheckSetting("Seeds", "Seeds")){
         return
     }
-    loop 3 {
+    loop 2 {
         PlayerStatus("Going to buy Seeds!", "0x22e6a8",,false,,false)
         relativeMouseMove(0.5, 0.5)
         Sleep(500)
@@ -903,7 +904,7 @@ BuySeeds(){
         CloseClutter()
         return 1
     }
-    PlayerStatus("Failed to buy seeds 3 times, CLOSING ROBLOX!", "0x001a12")
+    PlayerStatus("Failed to buy seeds 2 times, CLOSING ROBLOX!", "0x001a12")
     CloseRoblox()
 }
 
@@ -979,6 +980,8 @@ GearCraftingTime := 10000000000
 SeedCraftingTime := 10000000000
 EventCraftingTime := 10000000000
 
+
+
 MainLoop() {
 
     if (GetRobloxHWND()){
@@ -996,18 +999,20 @@ MainLoop() {
     CameraCorrection()
     BuySeeds()
     BuyGears()
-    loop {
+    loop {   
 
-        initShops()
         minuteMod := Mod(A_Min, 10)
         
-        if ((minuteMod = 3 || minuteMod = 8)) {
-            if A_Sec < 5 {
-                CameraCorrection()
-            }
+        if ((minuteMod == 2 || minuteMod == 7) && A_Sec >= 20 && A_Sec <= 30) {
+            CameraCorrection()
+        }
+
+        if (minuteMod = 3 || minuteMod = 8) {
+            initShops()
             RewardInterupt()
         }
-        if (minuteMod == 0){
+
+        if (minuteMod == 0 && A_Sec < 3) {
             CloseClutter()
             Closelb()
             if (Disconnect()){
