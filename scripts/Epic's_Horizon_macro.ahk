@@ -885,7 +885,7 @@ BuySeeds(){
     if !(CheckSetting("Seeds", "Seeds")){
         return
     }
-    loop 2 {
+    loop {
         PlayerStatus("Going to buy Seeds!", "0x22e6a8",,false,,false)
         relativeMouseMove(0.5, 0.5)
         Sleep(500)
@@ -893,6 +893,11 @@ BuySeeds(){
         Sleep(1000)
         Send("{" Ekey "}")
         if !DetectShop("Seeds"){
+            if (A_Index == 2){
+                PlayerStatus("Failed to buy seeds 2 times, CLOSING ROBLOX!", "0x001a12")
+                CloseRoblox()
+                Disconnect()
+            }
             CameraCorrection()
             continue
         }
@@ -900,9 +905,6 @@ BuySeeds(){
         CloseClutter()
         return 1
     }
-    PlayerStatus("Failed to buy seeds 2 times, CLOSING ROBLOX!", "0x001a12")
-    CloseRoblox()
-    Disconnect()
 }
 
 
@@ -915,7 +917,7 @@ BuyGears(){
     if !(CheckSetting("Gears", "Gears")){
         return
     }
-    loop 2 {
+    loop {
         PlayerStatus("Going to buy Gears!", "0x22e6a8",,false,,false)
         ActivateRoblox()
         Clickbutton("Seeds",1)
@@ -929,6 +931,11 @@ BuyGears(){
         Sleep(500)
         Send("{" Ekey "}")
         if !DetectShop("Gears"){
+            if (A_Index == 2){
+                PlayerStatus("Failed to buy gears 2 times, CLOSING ROBLOX!", "0x001a12")
+                CloseRoblox()
+                Disconnect()
+            }
             CameraCorrection()
             continue
         }
@@ -937,12 +944,6 @@ BuyGears(){
         return 1
     }
     
-    CloseClutter()
-    Sleep(1500)
-    
-    PlayerStatus("Failed to buy gears 2 times, CLOSING ROBLOX!", "0x001a12")
-    CloseRoblox()
-    Disconnect()
 
 }
 
