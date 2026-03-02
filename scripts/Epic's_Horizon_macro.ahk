@@ -89,6 +89,70 @@ Walk(studs, MoveKey1, MoveKey2:=0) {
 	Send "{" MoveKey1  " up}" (MoveKey2 ? "{" MoveKey2  " up}" : "")
 }
 
+
+closeBrowser(){
+    for hwnd in WinGetList(,, "Program Manager")
+    {
+        p := WinGetProcessName("ahk_id " hwnd)
+        if (InStr(p, "Roblox") || InStr(p, "AutoHotkey"))
+            continue ; skip roblox and AHK windows
+        title := WinGetTitle("ahk_id " hwnd)
+        if (title = "")
+            continue ; skip empty title windows
+        s := WinGetStyle("ahk_id " hwnd)
+        if ((s & 0x8000000) || !(s & 0x10000000))
+            continue ; skip NoActivate and invisible windows
+        s := WinGetExStyle("ahk_id " hwnd)
+        if ((s & 0x80) || (s & 0x40000) || (s & 0x8))
+            continue ; skip ToolWindow and AlwaysOnTop windows
+        try
+        {
+            WinActivate "ahk_id " hwnd
+            WinMaximize("ahk_id " hwnd)
+            Sleep 500
+            Send "^{w}"
+        }
+        break
+    }
+}
+
+
+GameLoaded(){
+    
+    loop {
+        ActivateRoblox()
+        hwnd := GetRobloxHWND()
+        GetRobloxClientPos(hwnd)
+        capx := windowX + windowWidth * 0.3
+        capy := windowY + windowHeight * 0.6
+        pBMScreen := Gdip_BitmapFromScreen(capx "|" capy "|" windowWidth * 0.3 "|" windowHeight * 0.4)
+        if (Gdip_ImageSearch(pBMScreen, bitmaps["ConfirmPlot"], &OutputList , , , , , 25) = 1) {
+            Cords := StrSplit(OutputList, ",")
+            x := Cords[1] + capx
+            y := Cords[2] + capy
+            MouseMove(x, y)
+            Sleep(300)
+            Click
+            Sleep(1000)
+            Gdip_DisposeImage(pBMScreen)
+            return true
+        }
+        Gdip_DisposeImage(pBMScreen)
+        relativeMouseMove(0.5,0.5)
+        Sleep(500)
+        Click
+        Click
+        Sleep(2000)
+
+        if A_Index == 30 {
+            return false
+        }
+    }
+
+
+    return false
+}
+
 CheckDisconnnect(){
     static VipLink := IniRead(settingsFile, "Settings", "VipLink")
     hwnd := GetRobloxHWND()
@@ -120,44 +184,16 @@ CheckDisconnnect(){
         loop 60 {
             if GetRobloxHWND() {
                 Sleep(500)
-                for hwnd in WinGetList(,, "Program Manager")
-                {
-                    p := WinGetProcessName("ahk_id " hwnd)
-                    if (InStr(p, "Roblox") || InStr(p, "AutoHotkey"))
-                        continue ; skip roblox and AHK windows
-                    title := WinGetTitle("ahk_id " hwnd)
-                    if (title = "")
-                        continue ; skip empty title windows
-                    s := WinGetStyle("ahk_id " hwnd)
-                    if ((s & 0x8000000) || !(s & 0x10000000))
-                        continue ; skip NoActivate and invisible windows
-                    s := WinGetExStyle("ahk_id " hwnd)
-                    if ((s & 0x80) || (s & 0x40000) || (s & 0x8))
-                        continue ; skip ToolWindow and AlwaysOnTop windows
-                    try
-                    {
-                        WinActivate "ahk_id " hwnd
-                        WinMaximize("ahk_id " hwnd)
-                        Sleep 500
-                        Send "^{w}"
-                    }
-                    break
+                closeBrowser()
+                Sleep(500)
+                ActivateRoblox()
+                if !GameLoaded() {
+                    PlayerStatus("Failed to load game, retrying...", "0xFF0000", ,false, ,true)
+                    CloseRoblox()
+                    return 0
                 }
-                Sleep(500)
                 ActivateRoblox()
-                Sleep(30000)
-                ActivateRoblox()
-                ResizeRoblox()
-                GetRobloxClientPos(GetRobloxHWND())
-                relativeMouseMove(0.5,0.5)
-                Click
-                Send("w")
-                Sleep(4000)
-                relativeMouseMove(0.5,0.86)
-                Sleep(500)
-                Click
-                Click
-                Sleep(1000)
+                Sleep(3000)
                 PlayerStatus("Game Succesfully loaded", "0x00a838", ,false)
                 Sleep(1000)
                 Send("{Tab}")
@@ -168,34 +204,9 @@ CheckDisconnnect(){
             }
             Sleep(1000)
         }
-        if (A_Index == 60){
-            Sleep(500)
-            for hwnd in WinGetList(,, "Program Manager")
-            {
-                p := WinGetProcessName("ahk_id " hwnd)
-                if (InStr(p, "Roblox") || InStr(p, "AutoHotkey"))
-                    continue ; skip roblox and AHK windows
-                title := WinGetTitle("ahk_id " hwnd)
-                if (title = "")
-                    continue ; skip empty title windows
-                s := WinGetStyle("ahk_id " hwnd)
-                if ((s & 0x8000000) || !(s & 0x10000000))
-                    continue ; skip NoActivate and invisible windows
-                s := WinGetExStyle("ahk_id " hwnd)
-                if ((s & 0x80) || (s & 0x40000) || (s & 0x8))
-                    continue ; skip ToolWindow and AlwaysOnTop windows
-                try
-                {
-                    WinActivate "ahk_id " hwnd
-                    WinMaximize("ahk_id " hwnd)
-                    Sleep 500
-                    Send "^{w}"
-                }
-                break
-            }
-            Sleep(500)
-        }
-        Gdip_DisposeImage(pBMScreen)
+        Sleep(500)
+        closeBrowser()
+        Sleep(500)
         return 0
 
     } else {
@@ -221,7 +232,24 @@ CloseChat(){
     Gdip_DisposeImage(pBMScreen)
 }
 
-
+Closelb(){
+    ActivateRoblox()
+    hwnd := GetRobloxHWND()
+    GetRobloxClientPos(hwnd)
+    capX := windowX + windowWidth - 300  
+    capY := windowY                      
+    capW := 300                          
+    capH := 200                          
+    pBMScreen := Gdip_BitmapFromScreen(capX "|" capY "|" capW "|" capH)
+    if (Gdip_ImageSearch(pBMScreen, bitmaps["Leaderboard"], , , , , , 50) = 1) {
+        Send("{Tab}")
+        Sleep(100)
+        Gdip_DisposeImage(pBMScreen)
+        return true
+    }
+    Gdip_DisposeImage(pBMScreen)
+    return false 
+}
 
 openBag(){  
     ActivateRoblox()
@@ -381,43 +409,7 @@ clickCategory(category){
 }
 
 
-equipRecall(){
-    searchItem("recall")
 
-    pBMScreen := Gdip_BitmapFromScreen(windowX "|" windowY "|" windowWidth "|" windowHeight )
-    if (Gdip_ImageSearch(pBMScreen, bitmaps["Recall Wrench"] , &OutputList, , , , , 25) = 1) {
-        Cords := StrSplit(OutputList, ",")
-        x := Cords[1] + windowX
-        y := Cords[2] + windowY
-        MouseMove(x, y)
-        Sleep(300)
-        Send("{Click down}")
-        Sleep(300)
-    }
-    Gdip_DisposeImage(pBMScreen)
-
-    pBMScreen := Gdip_BitmapFromScreen(
-        windowX "|" 
-        windowY + windowHeight - (windowHeight // 8) - 35 "|" 
-        windowWidth * 0.4 "|" 
-        windowHeight // 8
-    )
-    if (Gdip_ImageSearch(pBMScreen, bitmaps["recall slot"] , &OutputList, , , , , 30,,6) = 1 || Gdip_ImageSearch(pBMScreen, bitmaps["recall slot2"] , &OutputList, , , , , 30,,6) = 1) {
-        Cords := StrSplit(OutputList, ",")
-        x := Cords[1] + windowX
-        y := Cords[2] + windowY + windowHeight - (windowHeight // 8) 
-        MouseMove(x, y)
-        Sleep(300)
-        Send("{Click up}")
-        Sleep(300)
-    }
-    Send("{Click up}")
-    Sleep(500)
-    clearSearch()
-    closeBag()
-    Gdip_DisposeImage(pBMScreen)
-
-}
 
 
 
@@ -949,24 +941,6 @@ BuyGears(){
 
 
 
-Closelb(){
-    ActivateRoblox()
-    hwnd := GetRobloxHWND()
-    GetRobloxClientPos(hwnd)
-    capX := windowX + windowWidth - 300  
-    capY := windowY                      
-    capW := 300                          
-    capH := 200                          
-    pBMScreen := Gdip_BitmapFromScreen(capX "|" capY "|" capW "|" capH)
-    if (Gdip_ImageSearch(pBMScreen, bitmaps["Leaderboard"], , , , , , 50) = 1) {
-        Send("{Tab}")
-        Sleep(100)
-        Gdip_DisposeImage(pBMScreen)
-        return true
-    }
-    Gdip_DisposeImage(pBMScreen)
-    return false 
-}
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
