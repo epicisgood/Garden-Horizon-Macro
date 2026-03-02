@@ -6,7 +6,8 @@ A macro for **Garden Horizon** that automatically buys your selected seeds, and 
 
 ✅ The macro does NOT require **UI navigation** and the macro works using your **cursor**.
 
-<img width="450" height="500" alt="image" src="https://github.com/user-attachments/assets/c38e2e1f-b79f-4536-a96a-d475e54fc90e" />
+<img width="450" height="500" alt="image" src="https://github.com/user-attachments/assets/978da817-316b-4a2e-9710-719615736dd0" />
+
 
 ---
 **⚠️This macro only works for Windows Operating Systems!!**
