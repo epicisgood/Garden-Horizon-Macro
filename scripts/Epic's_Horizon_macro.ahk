@@ -635,7 +635,6 @@ CheckStock(index, list){
         y := Cords[2] + captureY + 3
         MouseMove(x, y)
         Sleep(25)
-        Click
         Gdip_DisposeImage(pBMScreen)
     } else {
         ; Gdip_DisposeImage(pBMScreen)
