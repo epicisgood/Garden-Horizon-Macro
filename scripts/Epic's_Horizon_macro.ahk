@@ -145,7 +145,7 @@ CheckDisconnnect(){
                 }
                 Sleep(500)
                 ActivateRoblox()
-                Sleep(10000)
+                Sleep(30000)
                 ActivateRoblox()
                 ResizeRoblox()
                 GetRobloxClientPos(GetRobloxHWND())
