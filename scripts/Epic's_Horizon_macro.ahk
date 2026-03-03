@@ -154,7 +154,7 @@ GameLoaded(){
 }
 
 CheckDisconnnect(){
-    static VipLink := IniRead(settingsFile, "Settings", "VipLink")
+    VipLink := IniRead(settingsFile, "Settings", "VipLink")
     hwnd := GetRobloxHWND()
     GetRobloxClientPos()
     pBMScreen := Gdip_BitmapFromScreen(windowX "|" windowY + 30 "|" windowWidth "|" windowHeight - 30)
@@ -193,6 +193,7 @@ CheckDisconnnect(){
                     return 0
                 }
                 ActivateRoblox()
+                ResizeRoblox()
                 Sleep(3000)
                 PlayerStatus("Game Succesfully loaded", "0x00a838", ,false)
                 Sleep(1000)

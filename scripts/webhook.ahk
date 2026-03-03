@@ -3,7 +3,7 @@
  * @param {string} statusColor RGB color codes. Example: 0xe67e22
  */
 PlayerStatus(statusTitle, statusColor, statusDescription := "", Mentions := True, content := "", statusImage := True, statusTimestamp := True) {
-    static url := IniRead(settingsFile, "Settings", "url", "")
+    url := IniRead(settingsFile, "Settings", "url", "")
     if (url == "") {
         return
     }
