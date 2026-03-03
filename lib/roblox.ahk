@@ -113,11 +113,10 @@ ResizeRoblox() {
     GetRobloxClientPos(hwnd)
 	winTitle := "ahk_exe RobloxPlayerBeta.exe"
 	Sleep(333)
-	if (windowHeight == A_ScreenHeight && windowWidth == A_ScreenWidth)
+	if (windowHeight == A_ScreenHeight && windowWidth == A_ScreenWidth )
 	{
 		Send("{F11}")
 		Sleep(333)
-		WinMaximize(winTitle)
 	}
 
     ActivateRoblox()
@@ -125,6 +124,15 @@ ResizeRoblox() {
     GetRobloxClientPos(hwnd)
 	resHeight := 1009
 	resWidth := 1920
+
+	if (windowHeight < resHeight){
+		WinMaximize(winTitle)
+		Sleep(333)
+	}
+
+    ActivateRoblox()
+    hwnd := GetRobloxHWND()
+    GetRobloxClientPos(hwnd)
 
 	if (windowHeight > resHeight)
 	{
