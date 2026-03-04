@@ -863,7 +863,7 @@ initShops() {
     minuteMod := Mod(A_Min, 10)
     ; hourMod := Mod(A_Hour, 24)
 
-    if (shopInit && (minuteMod = 3 || minuteMod = 8)) {
+    if (shopInit && (minuteMod == 5 || minuteMod == 0)) {
         global LastShopTime
         LastShopTime := nowUnix()
         shopInit := false
@@ -878,6 +878,7 @@ BuySeeds(){
         return
     }
     loop {
+        ActivateRoblox()
         PlayerStatus("Going to buy Seeds!", "0x22e6a8",,false,,false)
         relativeMouseMove(0.5, 0.5)
         Sleep(500)
@@ -910,6 +911,7 @@ BuyGears(){
         return
     }
     loop {
+        ActivateRoblox()
         PlayerStatus("Going to buy Gears!", "0x22e6a8",,false,,false)
         ActivateRoblox()
         Clickbutton("Seeds",1)
@@ -980,17 +982,26 @@ MainLoop() {
     loop {   
 
         minuteMod := Mod(A_Min, 10)
-        
-        if ((minuteMod == 2 || minuteMod == 7) && A_Sec >= 20 && A_Sec <= 30) {
+
+
+        if ((minuteMod == 3 || minuteMod == 8) && A_Sec >= 20 && A_Sec <= 30) {
             CameraCorrection()
         }
 
-        if (minuteMod = 3 || minuteMod = 8) {
+
+        if ((minuteMod == 5 || minuteMod == 0) && A_Sec < 5) {
+            PlayerStatus("Checking shops!", "0xe6a122",,false,,false)
             initShops()
             RewardInterupt()
         }
 
-        if (minuteMod == 1 && A_Sec < 3) {
+        if ((minuteMod == 3 || minuteMod == 8) && (A_Sec > 45 && A_Sec <= 50)) {
+            PlayerStatus("Checking for admin abuse stock!", "0xe67422",,false,,false)
+            BuySeeds()
+            BuyGears()
+        }
+
+        if ((minuteMod == 1) && A_Sec < 5) {
             CloseClutter()
             Closelb()
             Disconnect()
@@ -1024,6 +1035,13 @@ ShowToolTip(){
         static GearTime := 300
         GearRemaining := Max(0, GearTime - (currentTime - LastShopTime))
         tooltipText .= "Gears: " (GearRemaining // 60) ":" Format("{:02}", Mod(GearRemaining, 60)) "`n"
+    }
+
+    if (GearsEnabled || SeedsEnabled) {
+        static AdminTime := 300 - 105
+        AdminRemaining := Max(0, AdminTime - (currentTime - LastShopTime - 60))
+        tooltipText .= "Admin Check: " (AdminRemaining // 60) ":" Format("{:02}", Mod(AdminRemaining, 60)) "`n"
+
     }
     
 
