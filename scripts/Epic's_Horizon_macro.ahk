@@ -726,7 +726,7 @@ buyShop(itemList, itemType){
             } else if A_ScreenHeight == 600 {
                 ScrollDown(1.67)
             }
-            Sleep(250)   
+            Sleep(500)
             Click
             Sleep(500)
         }
@@ -1058,6 +1058,7 @@ F3::
     ; pBMScreen := Gdip_BitmapFromScreen(windowX "|" windowY + 30 "|" windowWidth "|" windowHeight - 30)
     ; Gdip_SaveBitmapToFile(pBMScreen,"ss.png")
     ; Gdip_DisposeImage(pBMScreen)
+    buyShop(getItems("Seeds"), "Seeds")
     PauseMacro()
 }
 
