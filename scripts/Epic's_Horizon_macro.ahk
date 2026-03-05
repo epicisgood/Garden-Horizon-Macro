@@ -494,7 +494,7 @@ ChangeCamera(type){
     Sleep(150)
     Send("{Down}")
     if IniRead(settingsFile, "Settings", "RobloxGUI") == "1" {
-        loop 10 {
+        loop 19 {
             Send("{Down}")
             Sleep(50)
         }
@@ -1064,7 +1064,6 @@ F3::
     ; pBMScreen := Gdip_BitmapFromScreen(windowX "|" windowY + 30 "|" windowWidth "|" windowHeight - 30)
     ; Gdip_SaveBitmapToFile(pBMScreen,"ss.png")
     ; Gdip_DisposeImage(pBMScreen)
-    CloseRoblox()
     PauseMacro()
 }
 
