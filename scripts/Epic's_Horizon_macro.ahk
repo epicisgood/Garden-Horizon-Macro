@@ -1064,7 +1064,7 @@ F3::
     ; pBMScreen := Gdip_BitmapFromScreen(windowX "|" windowY + 30 "|" windowWidth "|" windowHeight - 30)
     ; Gdip_SaveBitmapToFile(pBMScreen,"ss.png")
     ; Gdip_DisposeImage(pBMScreen)
-    buyShop(getItems("Seeds"), "Seeds")
+    CloseRoblox()
     PauseMacro()
 }
 
