@@ -493,6 +493,12 @@ ChangeCamera(type){
     }
     Sleep(150)
     Send("{Down}")
+    if IniRead(settingsFile, "Settings", "RobloxGUI") == "1" {
+        loop 10 {
+            Send("{Down}")
+            Sleep(50)
+        }
+    }
     HyperSleep(333)
     Send("{Right}")
     HyperSleep(333)

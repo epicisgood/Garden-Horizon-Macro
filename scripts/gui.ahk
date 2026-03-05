@@ -121,7 +121,7 @@ SaveSettings(settingsJson) {
     IniFile := A_WorkingDir . "\settings.ini"
 
     for key, val in settings {
-        if (key == "url" || key == "discordID" || key == "VipLink") {
+        if (key == "url" || key == "discordID" || key == "VipLink" || key == "RobloxGUI") {
             IniWrite(val, IniFile, "Settings", key)
         }
     }
@@ -155,6 +155,7 @@ SendSettings(){
         IniWrite("", settingsFile, "Settings", "url")
         IniWrite("", settingsFile, "Settings", "discordID")
         IniWrite("", settingsFile, "Settings", "VipLink")
+        IniWrite("0", settingsFile, "Settings", "RobloxGUI")
         for i in seedItems {
             IniWrite("1", settingsFile, "Seeds", StrReplace(i, " ", ""))
         }
@@ -180,6 +181,7 @@ SendSettings(){
       , VipLink:   IniRead(settingsFile, "Settings", "VipLink")
       , SeedItems: Map()
       , GearItems: Map()
+      , RobloxGUI: IniRead(settingsFile, "Settings", "RobloxGUI")
     }
 
     for item in seedItems {
