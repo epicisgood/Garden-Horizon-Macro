@@ -37,7 +37,8 @@ async function onSaveClick() {
     url: document.getElementById('url').value,
     discordID: document.getElementById('discordID').value,
     VipLink: document.getElementById('VipLink').value,
-    RobloxGUI: +document.getElementById('RobloxGUI').checked,
+    RobloxGUI: document.getElementById('RobloxGUI').value,
+    // RobloxGUI: +document.getElementById('RobloxGUI').checked,
     seedItems: {},
     gearItems: {},
   };
@@ -70,7 +71,8 @@ function applySettings(a) {
     document.getElementById('url').value       = s.url;
     document.getElementById('discordID').value = s.discordID;
     document.getElementById('VipLink').value   = s.VipLink;
-    document.getElementById('RobloxGUI').checked =  !!+s.RobloxGUI;
+    document.getElementById('RobloxGUI').value   = s.RobloxGUI;
+    // document.getElementById('RobloxGUI').checked =  !!+s.RobloxGUI;
     
     const allItems = {
       SeedItems: s.SeedItems,

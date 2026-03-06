@@ -482,6 +482,7 @@ Clickbutton(button, clickit := 1){
 
 
 
+
 ChangeCamera(type){
     Send("{" EscKey "}")
     HyperSleep(750)
@@ -492,13 +493,10 @@ ChangeCamera(type){
         Sleep(50)
     }
     Sleep(150)
-    Send("{Down}")
-    if IniRead(settingsFile, "Settings", "RobloxGUI") == "1" {
-        loop 15 {
-        ; loop 18 {
-            Send("{Down}")
-            Sleep(50)
-        }
+    
+    loop IniRead(settingsFile, "Settings", "RobloxGUI", 1) {
+        Send("{Down}")
+        Sleep(50)
     }
     HyperSleep(333)
     Send("{Right}")

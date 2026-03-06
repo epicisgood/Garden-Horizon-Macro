@@ -155,7 +155,7 @@ SendSettings(){
         IniWrite("", settingsFile, "Settings", "url")
         IniWrite("", settingsFile, "Settings", "discordID")
         IniWrite("", settingsFile, "Settings", "VipLink")
-        IniWrite("0", settingsFile, "Settings", "RobloxGUI")
+        IniWrite("1", settingsFile, "Settings", "RobloxGUI")
         for i in seedItems {
             IniWrite("1", settingsFile, "Seeds", StrReplace(i, " ", ""))
         }
@@ -171,7 +171,7 @@ SendSettings(){
 
     for item in Other {
         key := StrReplace(item, " ", "")
-        value := IniRead(settingsFile, "Settings", key, "0")
+        value := IniRead(settingsFile, "Settings", key, "1")
         IniWrite(value, settingsFile, "Settings", key)
     }
     
