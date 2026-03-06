@@ -165,15 +165,15 @@ SendSettings(){
         Sleep(200)
     }
 
-    ; Other := [
-    ;     "TravelingMerchant",
-    ; ]
+    Other := [
+        "RobloxGUI",
+    ]
 
-    ; for item in Other {
-    ;     key := StrReplace(item, " ", "")
-    ;     value := IniRead(settingsFile, "Settings", key, "0")
-    ;     IniWrite(value, settingsFile, "Settings", key)
-    ; }
+    for item in Other {
+        key := StrReplace(item, " ", "")
+        value := IniRead(settingsFile, "Settings", key, "0")
+        IniWrite(value, settingsFile, "Settings", key)
+    }
     
     SettingsJson := { 
         url:       IniRead(settingsFile, "Settings", "url")
