@@ -494,7 +494,8 @@ ChangeCamera(type){
     Sleep(150)
     Send("{Down}")
     if IniRead(settingsFile, "Settings", "RobloxGUI") == "1" {
-        loop 18 {
+        loop 15 {
+        ; loop 18 {
             Send("{Down}")
             Sleep(50)
         }
